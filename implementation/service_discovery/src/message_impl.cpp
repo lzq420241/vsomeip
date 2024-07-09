@@ -82,6 +82,14 @@ bool message_impl::get_reboot_flag() const {
     return ((flags_ & VSOMEIP_REBOOT_FLAG) != 0);
 }
 
+flags_t message_impl::get_flags() {
+    return flags_;
+}
+
+uint32_t message_impl::get_reserved() {
+    return reserved_;
+}
+
 void message_impl::set_reboot_flag(bool _is_set) {
     if (_is_set)
         flags_ |= flags_t(VSOMEIP_REBOOT_FLAG);
@@ -211,6 +219,10 @@ uint32_t message_impl::get_options_length() {
     return options_length_;
 }
 
+uint32_t message_impl::get_entries_length() {
+    return entries_length_;
+}
+
 std::shared_ptr<payload> message_impl::get_payload() const {
     return std::make_shared<payload_impl>();
 }
@@ -265,26 +277,24 @@ bool message_impl::deserialize(vsomeip_v3::deserializer *_from) {
     is_successful = is_successful && _from->deserialize(flags_);
 
     // reserved
-    uint32_t reserved;
-    is_successful = is_successful && _from->deserialize(reserved, true);
+    is_successful = is_successful && _from->deserialize(reserved_, true);
 
     // entries
-    uint32_t entries_length = 0;
-    is_successful = is_successful && _from->deserialize(entries_length);
+    is_successful = is_successful && _from->deserialize(entries_length_);
 
     // backup the current remaining length
     uint32_t save_remaining = uint32_t(_from->get_remaining());
     if (!is_successful) {
         // couldn't deserialize entries length
         return is_successful;
-    } else if (entries_length > save_remaining) {
+    } else if (entries_length_ > save_remaining) {
         // not enough data available to deserialize entries array
         is_successful = false;
         return is_successful;
     }
 
     // set remaining bytes to length of entries array
-    _from->set_remaining(entries_length);
+    _from->set_remaining(entries_length_);
 
     // deserialize the entries
     while (is_successful && _from->get_remaining()) {
@@ -297,7 +307,7 @@ bool message_impl::deserialize(vsomeip_v3::deserializer *_from) {
     }
 
     // set length to remaining bytes after entries array
-    _from->set_remaining(save_remaining - entries_length);
+    _from->set_remaining(save_remaining - entries_length_);
 
     // Don't try to deserialize options if there aren't any
     if(_from->get_remaining() == 0) {

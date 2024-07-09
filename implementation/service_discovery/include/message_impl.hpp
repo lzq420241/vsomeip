@@ -80,7 +80,10 @@ public:
 
     int16_t get_option_index(const std::shared_ptr<option_impl> &_option) const;
     std::shared_ptr<option_impl> get_option(int16_t _index) const;
+    flags_t get_flags();
+    uint32_t get_reserved();
     uint32_t get_options_length();
+    uint32_t get_entries_length();
 
     std::shared_ptr<payload> get_payload() const;
     void set_payload(std::shared_ptr<payload> _payload);
@@ -111,7 +114,9 @@ private:
 
 private:
     flags_t flags_;
+    uint32_t reserved_;
     uint32_t options_length_;
+    uint32_t entries_length_;
 
     entries_t entries_;
     options_t options_;

@@ -10,6 +10,9 @@
 #define SAMPLE_INSTANCE_ID      0x5678
 #define SAMPLE_METHOD_ID        0x0421
 
+#define SAMPLE_MAJ_VER 0XFF /*Major version supported by Sample Service*/
+#define SAMPLE_MINOR_VER 0xFFFFFF/*Minor version supported by Sample Service*/
+
 #define SAMPLE_EVENT_ID         0x8778
 #define SAMPLE_GET_METHOD_ID    0x0001
 #define SAMPLE_SET_METHOD_ID    0x0002

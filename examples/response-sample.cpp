@@ -73,12 +73,12 @@ public:
 #endif
 
     void offer() {
-        app_->offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID);
+        app_->offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
         app_->offer_service(SAMPLE_SERVICE_ID + 1, SAMPLE_INSTANCE_ID);
     }
 
     void stop_offer() {
-        app_->stop_offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID);
+        app_->stop_offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
         app_->stop_offer_service(SAMPLE_SERVICE_ID + 1, SAMPLE_INSTANCE_ID);
     }
 
