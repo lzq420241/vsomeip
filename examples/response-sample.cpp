@@ -16,6 +16,8 @@
 
 #include "sample-ids.hpp"
 
+static int number_of_instances = 1;
+
 class service_sample {
 public:
     service_sample(bool _use_static_routing) :
@@ -73,12 +75,15 @@ public:
 #endif
 
     void offer() {
-        app_->offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
+        std::cout << "number of instance " << std::hex << number_of_instances << std::endl;
+        for(uint8_t i=0; i < number_of_instances; i++)
+            app_->offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID + i, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
         app_->offer_service(SAMPLE_SERVICE_ID + 1, SAMPLE_INSTANCE_ID);
     }
 
     void stop_offer() {
-        app_->stop_offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
+        for(uint8_t i=0; i < number_of_instances; i++)
+            app_->stop_offer_service(SAMPLE_SERVICE_ID, SAMPLE_INSTANCE_ID + i, SAMPLE_MAJ_VER, SAMPLE_MINOR_VER);
         app_->stop_offer_service(SAMPLE_SERVICE_ID + 1, SAMPLE_INSTANCE_ID);
     }
 
@@ -171,10 +176,14 @@ int main(int argc, char **argv) {
     bool use_static_routing(false);
 
     std::string static_routing_enable("--static-routing");
+    std::string instance_count("--instance-count");
 
     for (int i = 1; i < argc; i++) {
         if (static_routing_enable == argv[i]) {
             use_static_routing = true;
+        }
+        else if (instance_count == argv[i]) {
+            number_of_instances = std::max(1, atoi(argv[++i]));
         }
     }
 
