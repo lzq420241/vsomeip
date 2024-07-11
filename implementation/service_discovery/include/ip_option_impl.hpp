@@ -22,6 +22,7 @@ public:
     bool equals(const option_impl &_other) const;
 
     uint16_t get_port() const;
+    uint8_t get_reserved() const;
     void set_port(uint16_t _port);
 
     layer_four_protocol_e get_layer_four_protocol() const;
@@ -35,6 +36,7 @@ public:
 protected:
     layer_four_protocol_e protocol_;
     uint16_t port_;
+    uint8_t reserved_;
 };
 
 } // namespace sd

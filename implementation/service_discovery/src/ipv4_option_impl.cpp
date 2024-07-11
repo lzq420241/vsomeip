@@ -71,7 +71,7 @@ bool ipv4_option_impl::deserialize(vsomeip_v3::deserializer *_from) {
                             && length_ == VSOMEIP_SD_IPV4_OPTION_LENGTH;
     uint8_t its_reserved(static_cast<std::uint8_t>(layer_four_protocol_e::UNKNOWN));
     _from->deserialize(address_.data(), 4);
-    _from->deserialize(its_reserved);
+    _from->deserialize(reserved_);
     _from->deserialize(its_reserved);
     switch (static_cast<layer_four_protocol_e>(its_reserved)) {
         case layer_four_protocol_e::TCP:

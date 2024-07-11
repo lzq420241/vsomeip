@@ -45,6 +45,10 @@ unsigned short ip_option_impl::get_port() const {
     return port_;
 }
 
+uint8_t ip_option_impl::get_reserved() const {
+    return reserved_;
+}
+
 void ip_option_impl::set_port(unsigned short _port) {
     port_ = _port;
 }
